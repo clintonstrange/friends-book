@@ -31,23 +31,6 @@ const thoughtController = {
       });
   },
 
-  // get all thoughts of one user by user id
-
-  // getAllUserThoughtsById({ params }, res) {
-  //   console.log(params);
-  //   User.findOne({ _id: params.userId }).then((dbUserData) => {
-  //     if (!dbUserData) {
-  //       return res.status(404).json({ message: "No User with this id!" });
-  //     }
-  //     return Thought.find({})
-  //       .then((dbThoughtData) => res.json(dbThoughtData))
-  //       .catch((err) => {
-  //         console.log(err);
-  //         res.sendStatus(400);
-  //       });
-  //   });
-  // },
-
   // add thought to user
   addThought({ params, body }, res) {
     console.log(params);
