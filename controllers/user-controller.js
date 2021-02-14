@@ -80,7 +80,6 @@ const userController = {
   },
 
   // remove Friend
-
   removeFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.id },
