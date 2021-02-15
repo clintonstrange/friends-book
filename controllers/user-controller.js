@@ -64,23 +64,24 @@ const userController = {
 
   // add Friend to User
   addFriend({ params, body }, res) {
-    console.log(params.id),
-      console.log(body),
-      User.findOneAndUpdate(
-        { _id: params.id },
-        { $push: { friends: body } },
-        { new: true, runValidators: true }
-      )
-        .then((dbUserData) => {
-          console.log(dbUserData);
-          if (!dbUserData) {
-            res.status(404).json({ message: "No User found with this Id!" });
-            return;
-          }
-          console.log(dbUserData);
-          res.json(dbUserData);
-        })
-        .catch((err) => res.json(err));
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $push: { friends: body.friendId } },
+      { new: true, runValidators: true }
+    )
+      .then((dbUserData) => {
+        console.log(dbUserData);
+        if (!dbUserData) {
+          res.status(404).json({ message: "No User found with this Id!" });
+          return;
+        }
+        console.log(dbUserData);
+        res.json(dbUserData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json(err);
+      });
   },
 
   // remove Friend
