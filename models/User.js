@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 
 const validateEmail = function (email) {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -25,13 +25,13 @@ const UserSchema = new Schema(
     },
     thoughts: [
       {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "Thought",
       },
     ],
     friends: [
       {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "User",
       },
     ],
@@ -46,7 +46,7 @@ const UserSchema = new Schema(
   }
 );
 
-UserSchema.virtual("thoughtCount").get(function () {
+UserSchema.virtual("friendsCount").get(function () {
   return this.friends.length;
 });
 

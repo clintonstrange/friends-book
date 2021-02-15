@@ -5,7 +5,7 @@ const ReactionSchema = new Schema(
   {
     // set custom id to avoid confusion with parent comment _id
     reactionId: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
     reactionBody: {
@@ -60,7 +60,7 @@ const ThoughtSchema = new Schema(
   }
 );
 
-ThoughtSchema.virtual("reactionCount").get(function () {
+ThoughtSchema.virtual("reactionsCount").get(function () {
   return this.reactions.length;
 });
 
