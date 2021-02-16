@@ -65,7 +65,7 @@ const userController = {
   deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
       .then((dbUserData) => {
-        return Thought.deleteMany({ thoughts: dbUserData.thoughts });
+        return Thought.remove({ _id: dbUserData.thoughts });
       })
       .then((dbDeletedData) =>
         res.json({ message: "User and Associated Thoughts Deleted." })
