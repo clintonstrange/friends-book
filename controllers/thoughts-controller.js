@@ -18,7 +18,6 @@ const thoughtController = {
 
   // get one thought by id
   getOneThoughtById({ params }, res) {
-    console.log(params);
     Thought.findOne({ _id: params.thoughtId })
       .populate({
         path: "reactions",
@@ -33,7 +32,6 @@ const thoughtController = {
 
   // add thought to user
   addThought({ params, body }, res) {
-    console.log(params);
     Thought.create(body)
       .then(({ _id }) => {
         return User.findOneAndUpdate(
@@ -43,14 +41,16 @@ const thoughtController = {
         );
       })
       .then((dbUserData) => {
-        console.log(dbUserData);
         if (!dbUserData) {
           res.status(404).json({ message: "No User found with this id!" });
           return;
         }
         res.json(dbUserData);
       })
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
 
   // update thought
@@ -66,7 +66,10 @@ const thoughtController = {
         }
         res.json(dbThoughtData);
       })
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
 
   // add Reaction to Thought
@@ -83,12 +86,14 @@ const thoughtController = {
         }
         res.json(dbUserData);
       })
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
 
   // remove Thought
   removeThought({ params }, res) {
-    console.log(params);
     Thought.findOneAndDelete({ _id: params.thoughtId })
       .then((deletedThought) => {
         if (!deletedThought) {
@@ -107,7 +112,10 @@ const thoughtController = {
         }
         res.json(dbUserData);
       })
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
   // remove Reaction
   removeReaction({ params }, res) {
@@ -117,7 +125,10 @@ const thoughtController = {
       { new: true }
     )
       .then((dbUserData) => res.json(dbUserData))
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
 };
 

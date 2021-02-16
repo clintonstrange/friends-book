@@ -36,7 +36,10 @@ const userController = {
   createUser({ body }, res) {
     User.create(body)
       .then((dbUserData) => res.json(dbUserData))
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
 
   // update User by id
@@ -52,14 +55,20 @@ const userController = {
         }
         res.json(dbUserData);
       })
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
 
   // delete User
   deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
       .then((dbUserData) => res.json(dbUserData))
-      .catch((err) => res.json(err));
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
   },
 
   // add Friend to User
@@ -70,12 +79,10 @@ const userController = {
       { new: true, runValidators: true }
     )
       .then((dbUserData) => {
-        console.log(dbUserData);
         if (!dbUserData) {
           res.status(404).json({ message: "No User found with this Id!" });
           return;
         }
-        console.log(dbUserData);
         res.json(dbUserData);
       })
       .catch((err) => {
