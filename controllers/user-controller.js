@@ -1,11 +1,11 @@
-const { User } = require("../models");
+const { User, Thought } = require("../models");
 
 const userController = {
   // get all users
   getAllUsers(req, res) {
     User.find({})
       .populate({
-        path: "comments",
+        path: "thoughts",
         select: "-__v",
       })
       .select("-__v")
@@ -21,7 +21,7 @@ const userController = {
   getUserById({ params }, res) {
     User.findOne({ _id: params.id })
       .populate({
-        path: "comments",
+        path: "thoughts",
         select: "-__v",
       })
       .select("-__v")
@@ -64,7 +64,12 @@ const userController = {
   // delete User
   deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
-      .then((dbUserData) => res.json(dbUserData))
+      .then((dbUserData) => {
+        return Thought.deleteMany({ thoughts: dbUserData.thoughts });
+      })
+      .then((dbDeletedData) =>
+        res.json({ message: "User and Associated Thoughts Deleted." })
+      )
       .catch((err) => {
         console.log(err);
         res.sendStatus(400);
@@ -72,10 +77,10 @@ const userController = {
   },
 
   // add Friend to User
-  addFriend({ params, body }, res) {
+  addFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.id },
-      { $push: { friends: body.friendId } },
+      { $push: { friends: { _id: params.friendId } } },
       { new: true, runValidators: true }
     )
       .then((dbUserData) => {
